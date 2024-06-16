@@ -1,0 +1,12 @@
+.todoListWrapper {
+    border: 1px solid var(--Ga3);
+    background: var(--Wh0);
+    width: 365px;
+    height: 100%;
+    border-radius: var(--base-border-radius);
+    padding: 10px;
+}
+
+.todoListWrapper main {
+    margin-top: 15px;
+}

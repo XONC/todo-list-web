@@ -1,0 +1,6 @@
+.card {
+    border-radius: var(--big-border-radius);
+    border: 1px solid var(--Ga3);
+    height: 325px;
+    width: 100%;
+}

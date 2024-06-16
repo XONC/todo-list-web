@@ -1,0 +1,114 @@
+button {
+    border-radius: var(--base-border-radius);
+    box-sizing: content-box;
+}
+button.is-round {
+    border-radius: var(--helf-border-radius);
+}
+button.small {
+    padding: 0;
+}
+button.middle {
+    padding: 5px 8px;
+}
+button.large {
+    padding: 8px 12px;
+}
+button.default {
+    border: 1px solid var(--Ga3);
+    background: var(--Wh0);
+    color: var(--text1)
+}
+button.default.is-disabled {
+    border: 1px solid var(--Ga3);
+    background: var(--Wh0);
+    color: var(--Ga3)
+}
+
+button.text {
+    border: 0;
+    background: unset;
+    color: var(--text1)
+}
+
+button.primary {
+    border: 1px solid var(--primary);
+    background: var(--primary);
+    color: var(--Wh0)
+}
+button.primary:hover {
+    border: 1px solid var(--deep-primary);
+    background: var(--deep-primary);
+}
+button.primary.is-disabled {
+    border: 1px solid var(--light-primary);
+    background: var(--light-primary);
+}
+
+button.success {
+    border: 1px solid var(--success);
+    background: var(--success);
+    color: var(--Wh0)
+}
+button.success:hover {
+    border: 1px solid var(--deep-success);
+    background: var(--deep-success);
+}
+button.success.is-disabled {
+    border: 1px solid var(--light-success);
+    background: var(--light-success);
+}
+
+button.info {
+    border: 1px solid var(--info);
+    background: var(--info);
+    color: var(--Wh0)
+}
+button.info:hover {
+    border: 1px solid var(--deep-info);
+    background: var(--deep-info);
+}
+button.info.is-disabled {
+    border: 1px solid var(--light-info);
+    background: var(--light-info);
+}
+
+button.warning {
+    border: 1px solid var(--warning);
+    background: var(--warning);
+    color: var(--Wh0)
+}
+button.warning:hover {
+    border: 1px solid var(--deep-warning);
+    background: var(--deep-warning);
+}
+button.warning.is-disabled {
+    border: 1px solid var(--light-warning);
+    background: var(--light-warning);
+}
+
+button.danger {
+    border: 1px solid var(--danger);
+    background: var(--danger);
+    color: var(--Wh0)
+}
+button.danger:hover {
+    border: 1px solid var(--deep-danger);
+    background: var(--deep-danger);
+}
+button.danger.is-disabled {
+    border: 1px solid var(--light-danger);
+    background: var(--light-danger);
+}
+
+button .icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+button .button-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

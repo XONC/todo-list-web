@@ -1,0 +1,38 @@
+body {
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    color: var(--text1);
+    background-color: var(--bg2);
+    min-width: 1100px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.page {
+    padding: 20px;
+    height: 100vh;
+}
+
+
+.is-loading {
+    animation: 1s loading ease-in-out infinite;
+}
+.is-hidden {
+    display: none;
+}
+.is-visible {
+    display: block;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

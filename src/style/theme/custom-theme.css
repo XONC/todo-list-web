@@ -1,0 +1,70 @@
+:root {
+  --color-primary-100: #CDF9E4;
+  --color-primary-200: #9DF4D2;
+  --color-primary-300: #67DEBC;
+  --color-primary-400: #3FBEA4;
+  --color-primary-500: #109385;
+  --color-primary-600: #0B7E7C;
+  --color-primary-700: #086269;
+  --color-primary-800: #054755;
+  --color-primary-900: #033546;
+  --color-success-100: #E5FBD4;
+  --color-success-200: #C6F7AA;
+  --color-success-300: #9BE97B;
+  --color-success-400: #71D357;
+  --color-success-500: #3BB728;
+  --color-success-600: #249D1D;
+  --color-success-700: #148316;
+  --color-success-800: #0C6A16;
+  --color-success-900: #075716;
+  --color-info-100: #CAF6FD;
+  --color-info-200: #97E7FC;
+  --color-info-300: #62CFF6;
+  --color-info-400: #3BB3ED;
+  --color-info-500: #008BE2;
+  --color-info-600: #006BC2;
+  --color-info-700: #0050A2;
+  --color-info-800: #003983;
+  --color-info-900: #00286C;
+  --color-warning-100: #FCF1CA;
+  --color-warning-200: #FAE096;
+  --color-warning-300: #F1C660;
+  --color-warning-400: #E3AA38;
+  --color-warning-500: #D18400;
+  --color-warning-600: #B36A00;
+  --color-warning-700: #965300;
+  --color-warning-800: #793E00;
+  --color-warning-900: #643000;
+  --color-danger-100: #FDDED5;
+  --color-danger-200: #FBB7AB;
+  --color-danger-300: #F48680;
+  --color-danger-400: #EA5F64;
+  --color-danger-500: #DD2E45;
+  --color-danger-600: #BE2144;
+  --color-danger-700: #9F1742;
+  --color-danger-800: #800E3D;
+  --color-danger-900: #6A0839;
+
+  --primary: var(--color-primary-500);
+  --deep-primary: var(--color-primary-700);
+  --light-primary: var(--color-primary-300);
+
+  --success: var(--color-success-500);
+  --deep-success: var(--color-success-700);
+  --light-success: var(--color-success-300);
+
+  --info: var(--color-info-500);
+  --deep-info: var(--color-info-700);
+  --light-info: var(--color-info-300);
+
+  --warning: var(--color-warning-500);
+  --deep-warning: var(--color-warning-700);
+  --light-warning: var(--color-warning-300);
+
+  --danger: var(--color-danger-500);
+  --deep-danger: var(--color-danger-700);
+  --light-danger: var(--color-danger-300);
+
+
+  --theme-color: var(--primary);
+}

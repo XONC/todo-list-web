@@ -49,12 +49,30 @@ export const getFormData = (obj: object, method: 'get' | 'post' | 'GET' | 'POST'
 export const formDataToJSON = (formData: FormData) => {
   const payload = {}
 
-  for(const key in formData.keys()) {
-    console.log('formData.entries()',key)
-    console.log('formData.entries()',formData.keys())
+  for(const key in Array.from(formData.keys())) {
     // @ts-ignore
     payload[key] = formData.get(key)
   }
   console.log(payload)
   return payload
 }
+
+/**
+ * 合并类名
+ * @param arg
+ */
+export const classNameMarge = (arg: Array<string | undefined> | Record<string, boolean | undefined>) => {
+  if (Array.isArray(arg)) {
+    return arg.filter(item => typeof item === 'string' && !!item).join(" ")
+  } else {
+    let str = ""
+    Object.keys(arg).forEach(key => {
+      if(arg[key]) {
+        str += key
+      }
+    })
+    return str
+  }
+
+}
+

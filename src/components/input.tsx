@@ -9,7 +9,7 @@ type Props = {
 
 export default (props: Props) => {
   return (
-    <div>
+    <div className={""}>
       <input {...props} value={props.value} onChange={(e) => props.onChange(e.target.value)}/>
     </div>
   )

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {LinkProps} from "next/dist/client/link";
 import React, {MouseEventHandler,MouseEvent} from "react";
+import {classNameMarge} from "@/utils/common";
 
 type ButtonEmit = {
   onclick?: (e:MouseEvent<HTMLButtonElement, Event>) => void
@@ -32,11 +33,7 @@ type ButtonProps = {
 function ButtonContent(props: ButtonContent) {
   return (
     <div className={"button-content"}>
-      {(props.icon || props.loading) && <i className={`
-      ${props.loading && 'is-loading'} 
-      material-icons
-      icon
-      `}
+      {(props.icon || props.loading) && <i className={classNameMarge(["material-icons", "icon", props.loading ? 'is-loading': ''])}
       style={{
         marginRight: props.children ? '4px' : ''
       }}
@@ -58,12 +55,12 @@ function ButtonLink({linkProps, children}: {linkProps: LinkProps, children: Butt
 export default ({form,disabled, link, href,linkProps, children, round,icon,loading,size="middle", type="default",onclick}:  Readonly<ButtonProps>) => {
   const isDisabled = loading || disabled
   return (
-    <button form={form} className={`
-    ${type}
-    ${round ? 'is-round' : ''}
-    ${ isDisabled? 'is-disabled' : ''}
-    ${size}
-    `} disabled={isDisabled} onClick={onclick}>
+    <button form={form} className={classNameMarge([
+      type,
+      round ? 'is-round' : '',
+      isDisabled? 'is-disabled' : '',
+      size,
+    ])} disabled={isDisabled} onClick={onclick}>
       {link ? <ButtonLink linkProps={{
         href: href || '',
         ...linkProps

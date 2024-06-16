@@ -1,6 +1,7 @@
 'use client'
 
 import {ReactNode} from "react";
+import {classNameMarge} from "@/utils/common";
 
 type Props = {
   title: string;
@@ -10,7 +11,7 @@ type Props = {
 
 export default ({title, tag, children}: Props) => {
   return (
-    <div className={( tag || 'h3') + " wrp-header"}>
+    <div className={classNameMarge([tag || 'h3', 'wrp-header'])}>
       <div className={'title'}>{title}</div>
       <div>{children}</div>
     </div>

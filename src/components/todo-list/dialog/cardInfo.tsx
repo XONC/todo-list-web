@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {getFormData} from "@/utils/common";
 import {createdCard} from "@/actions/todo-list"
 import { useFormState } from 'react-dom';
+import Row, {Col} from "@/components/row";
 const defaultForm = {
   completeTime: '',
   content: '',
@@ -56,17 +57,26 @@ export default (props: DialogProps & Emit & Props) => {
   return (
     <Dialog {...props}>
       <Form ref={formRef} labelSuffix={"："} labelWidth={100}>
-        <FormItem  label={"标题"} prop={"title"}>
-          <Input value={myForm.title} onChange={(val) => changeForm({title: val})}></Input>
-        </FormItem>
-        <FormItem label={"内容"} prop={"title"}>
-          <Input type={"textarea"} value={myForm.content} onChange={(val) => changeForm({content: val})}></Input>
-        </FormItem>
+        <Row>
+          <Col span={6}>
+            <FormItem  label={"标题"} prop={"title"}>
+              <Input value={myForm.title} onChange={(val) => changeForm({title: val})}></Input>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label={"内容"} prop={"content"}>
+              <Input type={"textarea"} value={myForm.content} onChange={(val) => changeForm({content: val})}></Input>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label={"完成时间"} prop={"title"}>
+              <Input type={"textarea"} value={myForm.content} onChange={(val) => changeForm({content: val})}></Input>
+            </FormItem>
+          </Col>
+        </Row>
         {/*<FormItem label={"结束时间"} prop={"title"}>*/}
         {/*  <Input type={"datetime-local"} value={myForm.content} onChange={(val) => changeForm({content: val})}></Input>*/}
         {/*</FormItem>*/}
-
-        <button type={"submit"}>提交</button>
       </Form>
       <Footer>
         <Button loading={loading} type={"primary"} onclick={submit}>提交</Button>

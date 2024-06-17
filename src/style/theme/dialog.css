@@ -1,49 +1,48 @@
 .dialog .mark {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--mark);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--mark);
 }
 
 .dialog .main {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--Wh0);
-    border-radius: var(--base-border-radius);
-    padding: 15px 20px 0 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--Wh0);
+  border-radius: var(--base-border-radius);
+  padding: 15px 20px 0 20px;
 }
 
 .dialog main {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .dialog footer {
-    border-top:1px solid var(--Ga3) ;
-    padding: 10px 0;
-    margin-top: 10px;
+  border-top: 1px solid var(--Ga3);
+  padding: 10px 0;
+  margin-top: 10px;
 }
 .dialog footer.right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .dialog footer.right button {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 .dialog footer.center {
-    justify-content: center;
+  justify-content: center;
 }
 .dialog footer.center button {
-    margin:0 10px;
+  margin: 0 10px;
 }
 .dialog footer.left {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 .dialog footer.left button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
-

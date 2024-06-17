@@ -1,19 +1,19 @@
-'use client'
-import todoListWrapper from "@/style/todo-list/todoListWrapper.module.css"
+"use client";
+import todoListWrapper from "@/style/todo-list/todoListWrapper.module.css";
 import WrpHeader from "@/components/wrpHeader";
 import Button from "@/components/button";
 
 type Props = {
   title: string;
   children: Readonly<React.ReactNode>;
-} & Emit
+} & Emit;
 
 type Emit = {
-  onclick?: () => void
-}
+  onclick?: () => void;
+};
 
 export default (props: Props) => {
-  const {title,onclick, children} = props
+  const { title, onclick, children } = props;
   return (
     <section className={todoListWrapper.todoListWrapper}>
       <WrpHeader {...props}>
@@ -21,5 +21,5 @@ export default (props: Props) => {
       </WrpHeader>
       <main className={todoListWrapper.main}>{children}</main>
     </section>
-  )
-}
+  );
+};

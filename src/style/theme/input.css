@@ -5,20 +5,15 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  padding: 0 8px;
+  padding: 5px 8px;
+  width: 100%;
 }
 
 .input.small {
-  height: var(--size-small);
-  line-height: var(--size-small);
 }
 .input.middle {
-  height: var(--size-middle);
-  line-height: var(--size-middle);
 }
 .input.large {
-  height: var(--size-large);
-  line-height: var(--size-large);
 }
 
 .input__inner {

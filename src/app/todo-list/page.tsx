@@ -5,6 +5,8 @@ import TodoListCard from "@/components/todo-list/todoListCard";
 import todoListCss from "@/style/todo-list/index.module.css";
 import CardInfo from "@/components/todo-list/dialog/cardInfo";
 import { useState } from "react";
+import { Simulate } from "react-dom/test-utils";
+import submit = Simulate.submit;
 
 export default function TodoList() {
   // const todoList = await getTodoList()
@@ -14,19 +16,22 @@ export default function TodoList() {
     visible: false,
   });
 
-  const closeCardInfo = () => {
+  function closeCardInfo() {
     setCardInfo({
       title: "新增",
       visible: false,
     });
-  };
+  }
 
   function addCard() {
     setCardInfo({
       title: "新增",
       visible: true,
     });
-    console.log(1);
+  }
+
+  function submitCardInfo() {
+    closeCardInfo();
   }
 
   return (
@@ -46,6 +51,7 @@ export default function TodoList() {
         title={cardInfo.title}
         visible={cardInfo.visible}
         onClose={closeCardInfo}
+        onSubmit={submitCardInfo}
       ></CardInfo>
     </div>
   );

@@ -47,6 +47,9 @@ export const FormItem = (props: FormItemProps) => {
         <div
           className={"label"}
           style={{
+            flexShrink: 0,
+            flexBasis:
+              typeof labelWidth === "number" ? labelWidth + "px" : labelWidth,
             width:
               typeof labelWidth === "number" ? labelWidth + "px" : labelWidth,
             textAlign: labelPosition || "right",

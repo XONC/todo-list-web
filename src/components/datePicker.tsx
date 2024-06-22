@@ -7,6 +7,7 @@ import { createRef, useEffect, useState } from "react";
 import ImageIcon from "@/components/imageIcon";
 import * as repl from "repl";
 import { now } from "mongodb/src/utils";
+import { useEmit } from "@/components/hooks/commonHooks";
 
 type Common = {
   type: "month" | "year" | "date" | "timestamp";
@@ -18,6 +19,7 @@ type Common = {
     | "YYYY-MM-DD hh:mm"
     | "YYYY-MM-DD hh:mm:ss";
   onChange: (val: string) => void;
+  onClick?: (val: number) => void;
 };
 
 type Props = {
@@ -27,6 +29,16 @@ type Props = {
 type Calendar = {
   show: boolean;
 } & Common;
+
+type DateSpan = {
+  name: number;
+  code: number;
+  type: string;
+  year?: number;
+  month?: number;
+  reDraw?: boolean;
+  hiddenMark?: boolean;
+};
 // 初始年份
 const primeYear = 1970;
 const formatterTag = ["YYYY", "MM", "DD", "hh", "mm", "ss"];
@@ -36,8 +48,10 @@ const formatterTag = ["YYYY", "MM", "DD", "hh", "mm", "ss"];
  * @constructor
  */
 function Calendar(props: Calendar) {
+  const emit = useEmit<Calendar>(props);
+  const weeks = ["一", "二", "三", "四", "五", "六", "日"];
   const [isMounted, setIsMounted] = useState(false);
-  const [dateSpans, setDateSpans] = useState<number[]>([]);
+  const [dateSpans, setDateSpans] = useState<Array<DateSpan>>([]);
   const [currentValue, setCurrentValue] = useState(0);
   // 当type为year 需要用页码去控制年份，一页9个年份
   const [pageNumber, setPageNumber] = useState(0);
@@ -59,11 +73,11 @@ function Calendar(props: Calendar) {
 
         changeValue(year);
       } else if (props.type === "month") {
-        emitChangeValue(month);
-
         getMonthSpan(month);
+
+        changeValue(month);
       } else if (props.type === "date") {
-        getDaySpan(day);
+        getDaySpan({});
 
         changeValue(day);
       }
@@ -72,11 +86,34 @@ function Calendar(props: Calendar) {
     }
   }, []);
 
+  useEffect(() => {
+    emitChangeValue();
+  }, [tagYear, tagMonth, tagDay]);
+
   /**
    * 选中ui
    * @param span
    */
-  function clickSpan(span: number) {
+  function clickSpan(span: number, spanItem: DateSpan) {
+    if (spanItem.reDraw) {
+      if (props.type === "date") {
+        getDaySpan({
+          year: spanItem.year,
+          month: spanItem.month,
+        });
+        if (spanItem.month) {
+          setTagMonth(add0(spanItem.month));
+        }
+        if (spanItem.year) {
+          setTagYear(spanItem.year);
+        }
+      } else if (props.type === "month") {
+        getMonthSpan();
+      } else if (props.type === "year") {
+        getYearSpan(spanItem.year as number);
+      }
+    }
+    emit("onClick", span);
     changeValue(span);
   }
 
@@ -98,7 +135,6 @@ function Calendar(props: Calendar) {
       setTagDay(add0(value));
     }
 
-    emitChangeValue(value);
     // 设置ui使用的值
     setCurrentValue(value);
   }
@@ -109,7 +145,7 @@ function Calendar(props: Calendar) {
    */
   function onChangeWrp(direction: 0 | 1) {
     const index = currentValue % 9;
-    const anchor = dateSpans.at(index === 0 ? -1 : index - 1) as number;
+    const anchor = dateSpans.at(index === 0 ? -1 : index - 1)?.code as number;
     if (props.type === "year") {
       if (direction === 0) {
         getYearSpan(anchor - 9);
@@ -131,17 +167,13 @@ function Calendar(props: Calendar) {
    * @param _year
    */
   function onChangeYearWrp(direction: 0 | 1, _year?: number) {
-    if (direction === 0) {
-      setTagYear(tagYear - 1);
-      emitChangeValue(tagYear - 1, "year");
-    } else {
-      setTagYear(tagYear + 1);
-      emitChangeValue(tagYear + 1, "year");
-    }
+    const year = direction === 0 ? tagYear - 1 : tagYear + 1;
 
     if (props.type === "date" || props.type === "timestamp") {
-      getDaySpan();
+      getDaySpan({ year });
     }
+
+    setTagYear(year);
   }
 
   /**
@@ -158,8 +190,6 @@ function Calendar(props: Calendar) {
       } else {
         month = parseInt(tagMonth) - 1;
       }
-      setTagMonth(add0(month));
-      emitChangeValue(month, "month");
     } else {
       if (parseInt(tagMonth) + 1 > 12) {
         month = 1;
@@ -167,26 +197,24 @@ function Calendar(props: Calendar) {
       } else {
         month = parseInt(tagMonth) + 1;
       }
-      setTagMonth(add0(month));
-      emitChangeValue(month, "month");
     }
 
     if (props.type === "date" || props.type === "timestamp") {
-      getDaySpan();
+      getDaySpan({ month });
     }
+
+    setTagMonth(add0(month));
   }
 
   /**
    * 获取当前时间的字符串，之后容易进行替换
    */
-  function getDateObj(_value?: number, _type?: Props["type"]) {
+  function getDateObj() {
     const date = new Date();
-    const type = _type || props.type;
-    const value = _value ? add0(_value) : add0(currentValue);
     return {
-      y: type === "year" ? value : add0(tagYear),
-      m: type === "month" ? value : tagMonth,
-      d: type === "date" ? value : tagDay,
+      y: add0(tagYear),
+      m: tagMonth,
+      d: tagDay,
       h: add0(date.getHours()),
       min: add0(date.getMinutes()),
       s: add0(date.getSeconds()),
@@ -203,13 +231,10 @@ function Calendar(props: Calendar) {
 
   /**
    * 对输出的值进行格式化
-   * @param value
-   * @param _type
    */
-  function emitChangeValue(value: number, _type?: Props["type"]) {
-    const type = _type || props.type;
+  function emitChangeValue() {
     let result = "";
-    const dateObj = getDateObj(value, type);
+    const dateObj = getDateObj();
     //@ts-ignore
     const index = formatterTag.findIndex(
       (str) => props.valueFormatter.indexOf(str) === -1,
@@ -238,7 +263,7 @@ function Calendar(props: Calendar) {
       }
       return prev;
     }, "");
-    props.onChange(result);
+    emit("onChange", result);
   }
 
   /**
@@ -246,16 +271,24 @@ function Calendar(props: Calendar) {
    * @param year
    */
   function getYearSpan(year: number) {
-    let arr: Array<number> = new Array(9);
+    let arr: Array<DateSpan> = new Array(9);
     // 获取当前年份在9宫格中的位置
     // 当num = 0 时，在最后一位
     const num = (year - primeYear) % 9;
 
     for (let i = 0; i < arr.length; i++) {
       if (num === 0) {
-        arr[i] = year - (8 - i);
+        arr[i] = {
+          code: year - (8 - i),
+          name: year - (8 - i),
+          type: "year",
+        };
       } else {
-        arr[i] = year - (num - 1 - i);
+        arr[i] = {
+          code: year - (num - 1 - i),
+          name: year - (num - 1 - i),
+          type: "year",
+        };
       }
     }
 
@@ -267,24 +300,72 @@ function Calendar(props: Calendar) {
    * @param month
    */
   function getMonthSpan(month?: number) {
-    setDateSpans([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    let arr: DateSpan[] = [];
+
+    setDateSpans(
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => ({
+        code: item,
+        name: item,
+        type: "month",
+      })),
+    );
   }
 
   /**
    * 日期的ui
    * @param date
    */
-  function getDaySpan(date?: number) {
-    const arr = [];
+  function getDaySpan({ year, month }: { year?: number; month?: number }) {
+    const arr: DateSpan[] = [];
     const dateObj = getDateObj();
-    const days = new Date(
-      parseInt(dateObj.y),
-      parseInt(dateObj.m) + 1,
-      0,
-    ).getDate();
-    for (let i = 0; i < days; i++) {
-      arr.push(i + 1);
+    const nowYear = year || parseInt(dateObj.y);
+    const nowMonth = month || parseInt(dateObj.m);
+    // 当前月的最后一天
+    const nowDate = new Date(nowYear, nowMonth, 0);
+    // 上月的最后一天
+    const prevDate = new Date(nowYear, nowMonth - 1, 0);
+    const days = nowDate.getDate();
+    const week = nowDate.getDay();
+    // 处理天数时，需要掐头去尾
+    // 如果上个月是周日
+    const prevDay = prevDate.getDate();
+    const prevWeek = prevDate.getDay();
+    if (prevWeek) {
+      for (let i = 0; i < prevWeek; i++) {
+        console.log();
+        arr.push({
+          name: prevDay - (prevWeek - i) + 1,
+          code: prevDay - (prevWeek - i) + 1,
+          year: nowYear,
+          month: nowMonth - 1,
+          type: "prev-day",
+          reDraw: true,
+          hiddenMark: true,
+        });
+      }
     }
+    for (let i = 0; i < days; i++) {
+      arr.push({
+        name: i + 1,
+        code: i + 1,
+        type: "day",
+      });
+    }
+    if (week) {
+      console.log("days % 7", week);
+      for (let i = 0; i < 7 - week; i++) {
+        arr.push({
+          name: i + 1,
+          code: i + 1,
+          year: nowYear,
+          month: nowMonth + 1,
+          type: "next-day",
+          reDraw: true,
+          hiddenMark: true,
+        });
+      }
+    }
+
     setDateSpans(arr);
   }
 
@@ -336,7 +417,22 @@ function Calendar(props: Calendar) {
           ></ImageIcon>
         </div>
       </div>
+
       <div className={classNameMarge(["calender__main"])}>
+        {props.type === "date" &&
+          weeks.map((item) => {
+            return (
+              <div
+                key={item}
+                className={classNameMarge(["calender__item", "week"])}
+                style={{
+                  width: "14.28%",
+                }}
+              >
+                {<span>{item}</span>}
+              </div>
+            );
+          })}
         {dateSpans.map((item) => {
           return (
             <div
@@ -347,16 +443,21 @@ function Calendar(props: Calendar) {
                     : props.type === "month"
                       ? "25%"
                       : props.type === "date"
-                        ? "16.66%"
+                        ? "14.28%"
                         : "100%",
               }}
-              key={item}
+              key={item.type + item.code}
               className={classNameMarge([
                 "calender__item",
-                currentValue === item ? "is-select" : "",
+                currentValue === item.code && !item.hiddenMark
+                  ? "is-select"
+                  : "",
+                item.hiddenMark ? "hidden-mark" : "",
               ])}
             >
-              <span onClick={() => clickSpan(item)}>{item}</span>
+              <span onClick={() => clickSpan(item.code, item)}>
+                {item.code}
+              </span>
             </div>
           );
         })}
@@ -368,6 +469,10 @@ function Calendar(props: Calendar) {
 export default (props: Props) => {
   const inputRef = createRef<HTMLDivElement>();
   const [showPopover, setShowPopover] = useState(false);
+
+  function onClick(val: number) {
+    setShowPopover(false);
+  }
   return (
     <>
       <div
@@ -383,6 +488,7 @@ export default (props: Props) => {
           valueFormatter={props.valueFormatter}
           type={props.type}
           onChange={(val) => props.onChange(val)}
+          onClick={(val) => onClick(val)}
         />
       </Popover>
     </>

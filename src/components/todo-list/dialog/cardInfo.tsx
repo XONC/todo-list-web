@@ -9,6 +9,7 @@ import { createdCard } from "@/actions/todo-list";
 import { useFormState } from "react-dom";
 import Row, { Col } from "@/components/row";
 import DatePicker from "@/components/datePicker";
+import { useEmit } from "@/components/hooks/commonHooks";
 const defaultForm = {
   completeTime: "",
   content: "",
@@ -26,17 +27,19 @@ type MyForm = typeof defaultForm;
 type Props = {
   data?: MyForm;
 };
-type Emit = {};
+type Emit = {
+  onSubmit?: (val: MyForm) => void;
+};
 
 export default (props: DialogProps & Emit & Props) => {
-  const { title } = props;
+  const emit = useEmit<Emit>(props);
   const [loading, setLoading] = useState(false);
   const [myForm, setMyForm] = useState<MyForm>(props.data || defaultForm);
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createdCard, initialState);
   const formRef = createRef<HTMLFormElement>();
   useEffect(() => {
-    console.log(state);
+    emit("onSubmit", myForm);
     setLoading(false);
   }, [state]);
   const submit = async () => {
@@ -58,7 +61,7 @@ export default (props: DialogProps & Emit & Props) => {
     <Dialog {...props}>
       <Form ref={formRef} labelSuffix={"："} labelWidth={100}>
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             <FormItem label={"标题"} prop={"title"}>
               <Input
                 value={myForm.title}
@@ -67,29 +70,27 @@ export default (props: DialogProps & Emit & Props) => {
               ></Input>
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={24}>
             <FormItem label={"内容"} prop={"content"}>
               <Input
                 type={"textarea"}
+                row={2}
                 value={myForm.content}
                 onChange={(val) => changeForm({ content: val })}
               ></Input>
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem label={"完成时间"} prop={"title"}>
+            <FormItem label={"预计完成时间"} prop={"title"}>
               <DatePicker
                 valueFormatter={"YYYY-MM-DD hh:mm:ss"}
                 type={"date"}
-                value={myForm.createdDate}
-                onChange={(val) => changeForm({ createdDate: val })}
+                value={myForm.completeTime}
+                onChange={(val) => changeForm({ completeTime: val })}
               ></DatePicker>
             </FormItem>
           </Col>
         </Row>
-        {/*<FormItem label={"结束时间"} prop={"title"}>*/}
-        {/*  <Input type={"datetime-local"} value={myForm.content} onChange={(val) => changeForm({content: val})}></Input>*/}
-        {/*</FormItem>*/}
       </Form>
       <Footer>
         <Button loading={loading} type={"primary"} onclick={submit}>

@@ -50,9 +50,13 @@
   text-align: center;
   display: inline-block;
 }
-.calender__item:not(.is-select):hover {
+.calender__item:not(.is-select):not(.week):hover {
   cursor: pointer;
   color: var(--primary);
+}
+.calender__item.hidden-mark span {
+  background: var(--Ga2);
+  color: var(--Ga6);
 }
 .calender__item.is-select span {
   background: var(--primary);

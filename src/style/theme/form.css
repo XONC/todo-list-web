@@ -1,9 +1,9 @@
 .form-item {
   display: flex;
   justify-content: flex-start;
-  align-content: center;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .form-item .content {
-  margin-bottom: 12px;
 }

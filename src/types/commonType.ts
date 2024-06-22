@@ -24,4 +24,4 @@ type DialogProps = {
   onClose?: () => void;
 };
 
-type TodoListCard = {};
+type Size = "small" | "middle" | "large";

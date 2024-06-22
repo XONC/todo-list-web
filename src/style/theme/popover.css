@@ -1,0 +1,5 @@
+.popover {
+  background: #ffffff;
+  border-radius: var(--base-border-radius);
+  box-shadow: var(--el-box-shadow-light);
+}

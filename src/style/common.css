@@ -26,6 +26,9 @@ body {
 .is-visible {
   display: block;
 }
+.is-reversal {
+  transform: rotate(180deg);
+}
 
 @keyframes loading {
   0% {

@@ -8,6 +8,7 @@ import { getFormData } from "@/utils/common";
 import { createdCard } from "@/actions/todo-list";
 import { useFormState } from "react-dom";
 import Row, { Col } from "@/components/row";
+import DatePicker from "@/components/datePicker";
 const defaultForm = {
   completeTime: "",
   content: "",
@@ -57,10 +58,11 @@ export default (props: DialogProps & Emit & Props) => {
     <Dialog {...props}>
       <Form ref={formRef} labelSuffix={"："} labelWidth={100}>
         <Row>
-          <Col span={6}>
+          <Col span={12}>
             <FormItem label={"标题"} prop={"title"}>
               <Input
                 value={myForm.title}
+                placeholder={"请输入标题"}
                 onChange={(val) => changeForm({ title: val })}
               ></Input>
             </FormItem>
@@ -76,11 +78,12 @@ export default (props: DialogProps & Emit & Props) => {
           </Col>
           <Col span={12}>
             <FormItem label={"完成时间"} prop={"title"}>
-              <Input
-                type={"textarea"}
-                value={myForm.content}
-                onChange={(val) => changeForm({ content: val })}
-              ></Input>
+              <DatePicker
+                valueFormatter={"YYYY-MM-DD hh:mm:ss"}
+                type={"date"}
+                value={myForm.createdDate}
+                onChange={(val) => changeForm({ createdDate: val })}
+              ></DatePicker>
             </FormItem>
           </Col>
         </Row>

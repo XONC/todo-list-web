@@ -4,16 +4,23 @@ import { classNameMarge } from "@/utils/common";
 type Props = {
   value?: string;
   type?: InputHTMLAttributes<any>["type"];
-  onChange: (val?: string) => void;
+  placeholder?: InputHTMLAttributes<any>["placeholder"];
+  readOnly?: InputHTMLAttributes<any>["readOnly"];
+  size?: Size;
+  onChange?: (val?: string) => void;
 };
 
 export default (props: Props) => {
+  const size = props.size || "middle";
   return (
-    <div className={classNameMarge(["input"])}>
+    <div className={classNameMarge(["input", size])}>
       <input
-        {...props}
+        className={classNameMarge(["input__inner"])}
+        placeholder={props.placeholder}
+        type={props.type}
         value={props.value}
-        onChange={(e) => props.onChange(e.target.value)}
+        readOnly={props.readOnly}
+        onChange={(e) => props.onChange && props.onChange(e.target.value)}
       />
     </div>
   );

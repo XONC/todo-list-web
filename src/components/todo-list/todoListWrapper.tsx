@@ -4,16 +4,18 @@ import WrpHeader from "@/components/wrpHeader";
 import Button from "@/components/button";
 import TodoListCard, { CardProps } from "@/components/todo-list/todoListCard";
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import CardInfo from "@/components/todo-list/dialog/cardInfo";
-import { createdCard, fetchTodoList } from "@/actions/todo-list";
+import { createdCard, fetchTodoList, reloadPage } from "@/actions/todo-list";
 import { useFormState } from "react-dom";
 import { initialState } from "@/components/hooks/commonHooks";
 import ScrollBar from "@/components/scrollBar";
+import { useRouter } from "next/navigation";
 
 type Props = {
   title: string;
   status: CardProps["status"];
-  children?: Readonly<React.ReactNode>;
+  children?: ReactNode;
 } & Emit;
 
 type Emit = {
@@ -21,6 +23,7 @@ type Emit = {
 };
 
 export default (props: Props) => {
+  const router = useRouter();
   const { title, onclick, children } = props;
   const [todoList, setTdoList] = useState<CardProps[]>([]);
   // 用作页面的加载信号
@@ -30,24 +33,6 @@ export default (props: Props) => {
     title: "新增",
     visible: false,
   });
-
-  useEffect(() => {
-    setLoading(true);
-  }, []);
-
-  useEffect(() => {
-    if (loading) {
-      fetchTodoList({
-        status: props.status,
-      })
-        .then((res) => {
-          setTdoList(res.data || []);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [loading]);
 
   function closeCardInfo() {
     setCardInfo({
@@ -65,35 +50,17 @@ export default (props: Props) => {
 
   function submitCardInfo() {
     closeCardInfo();
-    setLoading(true);
-  }
-
-  function onChangeStatus() {
-    setLoading(true);
+    reloadPage();
   }
 
   return (
     <>
       <section className={todoListWrapper.todoListWrapper}>
-        <WrpHeader {...props}>
+        <WrpHeader title={props.title}>
           <Button type={"primary"} icon={"add"} onclick={addCard}></Button>
         </WrpHeader>
         <main className={todoListWrapper.main}>
-          <ScrollBar>
-            {loading ? (
-              <p>加载中。。。</p>
-            ) : (
-              todoList.map((item) => {
-                return (
-                  <TodoListCard
-                    key={item.uuid}
-                    {...item}
-                    onChangeStatus={onChangeStatus}
-                  ></TodoListCard>
-                );
-              })
-            )}
-          </ScrollBar>
+          <ScrollBar>{props.children}</ScrollBar>
         </main>
       </section>
 

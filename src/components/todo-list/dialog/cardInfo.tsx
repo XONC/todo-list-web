@@ -14,6 +14,7 @@ import {
   isVerifyIsSuccess,
   useEmit,
 } from "@/components/hooks/commonHooks";
+import type { DialogProps } from "@/types/commonType";
 const defaultForm = {
   predictCompleteTime: "",
   completeTime: "",

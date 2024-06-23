@@ -5,6 +5,9 @@ import { formDataToJSON } from "@/utils/common";
 import form from "@/components/form";
 import { useMappingDB } from "@/components/hooks/commonHooks";
 import type { DBResponse } from "@/types/commonType";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -14,14 +17,15 @@ const prisma = new PrismaClient();
  * @param payload
  */
 export async function fetchTodoList(payload: any) {
-  return useMappingDB(
-    async () =>
-      await prisma.card.findMany({
-        where: {
-          status: payload.status,
-        },
-      }),
-  );
+  let status = payload.status === "" ? undefined : payload.status;
+  return useMappingDB(async () => {
+    noStore();
+    return await prisma.card.findMany({
+      where: {
+        status,
+      },
+    });
+  });
 }
 
 /**
@@ -57,4 +61,10 @@ export async function updateCard(payload: any) {
     });
     return res.uuid;
   });
+}
+
+export async function reloadPage() {
+  revalidatePath("/todo-list");
+  // 跳转invoices页面
+  redirect("/todo-list");
 }

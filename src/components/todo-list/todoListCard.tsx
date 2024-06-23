@@ -4,8 +4,9 @@ import cardCss from "@/style/todo-list/todoListCard.module.css";
 import { dateFilter } from "@/utils/common";
 import Button from "@/components/button";
 import { useState } from "react";
-import { updateCard } from "@/actions/todo-list";
+import { reloadPage, updateCard } from "@/actions/todo-list";
 import { isVerifyIsSuccess, useEmit } from "@/components/hooks/commonHooks";
+import type { Todo_List_Card_Status } from "@/types/commonType";
 
 export type CardProps = {
   id: string;
@@ -37,11 +38,11 @@ export default (
     status,
     onChangeStatus,
   } = props;
-  console.log(status);
   const emit = useEmit(props);
   const [loading, setLoading] = useState(false);
 
   function changeStatus(value: CardProps["status"]) {
+    setLoading(true);
     updateCard({
       id,
       status: value,
@@ -49,11 +50,16 @@ export default (
         value === 1 ? dateFilter(new Date(), "YYYY-MM-DD hh:mm:ss") : undefined,
       completeTime:
         value === 2 ? dateFilter(new Date(), "YYYY-MM-DD hh:mm:ss") : undefined,
-    }).then((res) => {
-      if (isVerifyIsSuccess(res)) {
-        emit("onChangeStatus");
-      }
-    });
+    })
+      .then((res) => {
+        if (isVerifyIsSuccess(res)) {
+          emit("onChangeStatus");
+          reloadPage();
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
   return (
     <section className={cardCss.card}>

@@ -1,10 +1,10 @@
-enum Todo_List_Card_Status {
+export enum Todo_List_Card_Status {
   UnStart = 0,
   Process,
   Complete,
 }
 
-type ColorType =
+export type ColorType =
   | "default"
   | "success"
   | "danger"
@@ -14,7 +14,7 @@ type ColorType =
   | "text";
 
 /*弹框类组件基本属性*/
-type DialogProps = {
+export type DialogProps = {
   title: string;
   visible: boolean;
   width: string | number;
@@ -24,9 +24,9 @@ type DialogProps = {
   onClose?: () => void;
 };
 
-type Size = "small" | "middle" | "large";
+export type Size = "small" | "middle" | "large";
 
-interface DBResponse<T> {
+export interface DBResponse<T> {
   code: 200 | 500;
   data: T;
   message: string;

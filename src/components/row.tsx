@@ -1,9 +1,9 @@
 import React, { createContext } from "react";
 import { classNameMarge } from "@/utils/common";
-
+import type { ReactNode } from "react";
 type Props = {
   gutter?: number;
-  children: Readonly<React.ReactNode>;
+  children: ReactNode;
 };
 
 type RowProps = {};

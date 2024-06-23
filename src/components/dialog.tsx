@@ -1,8 +1,9 @@
 "use client";
 import WrpHeader from "@/components/wrpHeader";
 import Button from "@/components/button";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { classNameMarge } from "@/utils/common";
+import type { DialogProps } from "@/types/commonType";
 
 export const Footer = (props: {
   position?: "right | center | left";

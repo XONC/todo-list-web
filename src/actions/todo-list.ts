@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { formDataToJSON } from "@/utils/common";
 import form from "@/components/form";
 import { useMappingDB } from "@/components/hooks/commonHooks";
+import type { DBResponse } from "@/types/commonType";
 
 const prisma = new PrismaClient();
 

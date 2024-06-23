@@ -1,16 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { LinkProps } from "next/dist/client/link";
-import React, { MouseEventHandler, MouseEvent } from "react";
+import type { LinkProps } from "next/dist/client/link";
+import type React, {
+  ReactNode,
+  MouseEventHandler,
+  MouseEvent,
+  ButtonHTMLAttributes,
+} from "react";
 import { classNameMarge } from "@/utils/common";
+import type { ColorType } from "@/types/commonType";
 
 type ButtonEmit = {
   onclick?: (e: MouseEvent<HTMLButtonElement, Event>) => void;
 };
 
 type ButtonContent = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   icon?: string;
   loading?: boolean;
 };
@@ -23,7 +29,7 @@ type ButtonProps = {
   linkProps?: LinkProps;
   disabled?: boolean;
   size?: "middle" | "small" | "large";
-  form?: React.ButtonHTMLAttributes<HTMLButtonElement>["form"];
+  form?: ButtonHTMLAttributes<HTMLButtonElement>["form"];
 } & ButtonContent &
   ButtonEmit;
 
@@ -49,16 +55,13 @@ function ButtonContent(props: ButtonContent) {
   );
 }
 
-function ButtonLink({
-  linkProps,
-  children,
-}: {
+function ButtonLink(props: {
   linkProps: LinkProps;
   children: ButtonProps["children"];
 }) {
   return (
-    <Link {...linkProps}>
-      <ButtonContent>{children}</ButtonContent>
+    <Link href={props.linkProps.href}>
+      <ButtonContent>{props.children}</ButtonContent>
     </Link>
   );
 }

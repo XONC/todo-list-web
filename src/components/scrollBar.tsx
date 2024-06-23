@@ -1,12 +1,13 @@
 "use client";
 
 import React, { createRef, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { classNameMarge } from "@/utils/common";
 
 type Props = {
   height?: number;
   className?: string;
-  children: Readonly<React.ReactNode>;
+  children: ReactNode;
 };
 
 export default (props: Props) => {

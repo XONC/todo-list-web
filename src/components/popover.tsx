@@ -1,8 +1,8 @@
 import { classNameMarge } from "@/utils/common";
 import React, { createRef, RefObject, useEffect, useState } from "react";
-
+import type { ReactNode } from "react";
 type CommonProps = {
-  children?: Readonly<React.ReactNode>;
+  children?: ReactNode;
 };
 
 type Props = {

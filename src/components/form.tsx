@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { EventEmitter } from "events";
 import { getTureValue } from "@/utils/common";
+import type { ReactNode } from "react";
 
 const commonPropsContext = createContext<Omit<Props, "children">>({
   labelSuffix: "",
@@ -20,7 +21,7 @@ type Props = {
   labelSuffix?: string;
   labelWidth?: string | number;
   labelPosition?: "left" | "right" | "";
-  children: Readonly<React.ReactNode>;
+  children: ReactNode;
 };
 
 type FormItemProps = {

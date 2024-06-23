@@ -1,5 +1,6 @@
-import { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes } from "react";
 import { classNameMarge } from "@/utils/common";
+import type { Size } from "@/types/commonType";
 
 type Props = {
   value?: string;

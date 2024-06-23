@@ -6,7 +6,8 @@ button.is-round {
   border-radius: var(--helf-border-radius);
 }
 button.small {
-  padding: 0;
+  padding: 2px 5px;
+  font-size: 12px;
 }
 button.middle {
   padding: 5px 8px;

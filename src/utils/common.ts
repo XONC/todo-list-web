@@ -80,3 +80,70 @@ export const classNameMarge = (
     return str;
   }
 };
+/**
+ * 补0
+ * @param value
+ */
+export function add0(value: number | string) {
+  return String(value).length < 2 ? "0" + String(value) : String(value);
+}
+
+/**
+ * 处理时间
+ * @param value
+ * @param _formatter
+ */
+export const dateFilter = (
+  value?: string | null | Date,
+  _formatter?:
+    | "YYYY"
+    | "YYYY-MM"
+    | "YYYY-MM-DD"
+    | "YYYY-MM-DD hh"
+    | "YYYY-MM-DD hh:mm"
+    | "YYYY-MM-DD hh:mm:ss",
+) => {
+  const formatter = _formatter ? _formatter : "YYYY-MM-DD hh:mm:ss";
+  if (!value) {
+    return "";
+  }
+
+  const date = typeof value !== "string" ? value : new Date(value);
+
+  const dateObj = {
+    y: add0(date.getFullYear()),
+    m: add0(date.getMonth() + 1),
+    d: add0(date.getDate()),
+    h: add0(date.getHours()),
+    min: add0(date.getMinutes()),
+    s: add0(date.getSeconds()),
+  };
+
+  const formatterTag = ["YYYY", "MM", "DD", "hh", "mm", "ss"];
+  //@ts-ignore
+  const index = formatterTag.findIndex((str) => formatter.indexOf(str) === -1);
+  const tagArr = index === -1 ? formatterTag : formatterTag.slice(0, index);
+  return tagArr.reduce((prev, item, index, self) => {
+    switch (item) {
+      case "YYYY":
+        prev += dateObj.y;
+        break;
+      case "MM":
+        prev += "-" + dateObj.m;
+        break;
+      case "DD":
+        prev += "-" + dateObj.d;
+        break;
+      case "hh":
+        prev += " " + dateObj.h;
+        break;
+      case "mm":
+        prev += ":" + dateObj.min;
+        break;
+      case "ss":
+        prev += ":" + dateObj.s;
+        break;
+    }
+    return prev;
+  }, "");
+};

@@ -3,35 +3,57 @@ import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { formDataToJSON } from "@/utils/common";
 import form from "@/components/form";
+import { useMappingDB } from "@/components/hooks/commonHooks";
 
 const prisma = new PrismaClient();
 
-export type State = {
-  errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
-  };
-  message?: string | null;
-};
-
-export async function getTodoList() {
-  return await prisma.card.findMany();
+/**
+ * 返回todoList
+ * @param state
+ * @param payload
+ */
+export async function fetchTodoList(payload: any) {
+  return useMappingDB(
+    async () =>
+      await prisma.card.findMany({
+        where: {
+          status: payload.status,
+        },
+      }),
+  );
 }
 
-export async function createdCard(state: State, payload: any) {
-  try {
-    const id = await prisma.card.create({
+/**
+ * 创建card
+ * @param state
+ * @param payload
+ */
+export async function createdCard(
+  state: DBResponse<string | null>,
+  payload: any,
+) {
+  return useMappingDB(async () => {
+    const res = await prisma.card.create({
       data: payload,
     });
-    console.log(id);
-    return {
-      message: null,
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      message: "Database Error: Failed to Create Invoice.",
-    };
-  }
+    return res.uuid;
+  });
+}
+
+/**
+ * 更新卡片
+ * @param payload
+ */
+export async function updateCard(payload: any) {
+  const id = payload.id;
+  delete payload.id;
+  return useMappingDB(async () => {
+    const res = await prisma.card.update({
+      where: {
+        id: id,
+      },
+      data: payload,
+    });
+    return res.uuid;
+  });
 }

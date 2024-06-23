@@ -1,5 +1,5 @@
 "use client";
-import { classNameMarge } from "@/utils/common";
+import { add0, classNameMarge } from "@/utils/common";
 import Input from "@/components/input";
 import DatePicker from "@/components/datePicker";
 import Popover from "@/components/popover";
@@ -219,14 +219,6 @@ function Calendar(props: Calendar) {
       min: add0(date.getMinutes()),
       s: add0(date.getSeconds()),
     };
-  }
-
-  /**
-   * 补0
-   * @param value
-   */
-  function add0(value: number | string) {
-    return String(value).length < 2 ? "0" + String(value) : String(value);
   }
 
   /**

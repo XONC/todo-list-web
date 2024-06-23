@@ -25,3 +25,9 @@ type DialogProps = {
 };
 
 type Size = "small" | "middle" | "large";
+
+interface DBResponse<T> {
+  code: 200 | 500;
+  data: T;
+  message: string;
+}

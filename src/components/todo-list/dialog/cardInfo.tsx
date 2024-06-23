@@ -4,13 +4,18 @@ import { createRef, MouseEvent, useEffect, useRef, useState } from "react";
 import Input from "@/components/input";
 import Form, { FormItem } from "@/components/form";
 import { v4 as uuidv4 } from "uuid";
-import { getFormData } from "@/utils/common";
+import { dateFilter, getFormData } from "@/utils/common";
 import { createdCard } from "@/actions/todo-list";
 import { useFormState } from "react-dom";
 import Row, { Col } from "@/components/row";
 import DatePicker from "@/components/datePicker";
-import { useEmit } from "@/components/hooks/commonHooks";
+import {
+  initialState,
+  isVerifyIsSuccess,
+  useEmit,
+} from "@/components/hooks/commonHooks";
 const defaultForm = {
+  predictCompleteTime: "",
   completeTime: "",
   content: "",
   createdDate: "",
@@ -32,21 +37,25 @@ type Emit = {
 };
 
 export default (props: DialogProps & Emit & Props) => {
+  const [requestState, dispatch] = useFormState(
+    createdCard,
+    initialState<string>(),
+  );
   const emit = useEmit<Emit>(props);
   const [loading, setLoading] = useState(false);
   const [myForm, setMyForm] = useState<MyForm>(props.data || defaultForm);
-  const initialState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(createdCard, initialState);
   const formRef = createRef<HTMLFormElement>();
   useEffect(() => {
-    emit("onSubmit", myForm);
+    if (isVerifyIsSuccess(requestState)) {
+      emit("onSubmit", myForm);
+    }
     setLoading(false);
-  }, [state]);
+  }, [requestState]);
   const submit = async () => {
     setLoading(true);
     const payload = { ...myForm };
     payload.uuid = uuidv4();
-    payload.createdDate = new Date().getTime().toString();
+    payload.createdDate = dateFilter(new Date(), "YYYY-MM-DD hh:mm:ss");
     dispatch(payload);
   };
 
@@ -81,12 +90,12 @@ export default (props: DialogProps & Emit & Props) => {
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem label={"预计完成时间"} prop={"title"}>
+            <FormItem label={"预计完成时间"} prop={"predictCompleteTime"}>
               <DatePicker
                 valueFormatter={"YYYY-MM-DD hh:mm:ss"}
                 type={"date"}
-                value={myForm.completeTime}
-                onChange={(val) => changeForm({ completeTime: val })}
+                value={myForm.predictCompleteTime}
+                onChange={(val) => changeForm({ predictCompleteTime: val })}
               ></DatePicker>
             </FormItem>
           </Col>

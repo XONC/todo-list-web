@@ -8,6 +8,12 @@ export default async function Home() {
       <Button link href={"/todo-list"}>
         任务列表
       </Button>
+      <Button link href={"/game-list?type=shadow-dog"}>
+        影子狗
+      </Button>
+      <Button link href={"/game-list?type=parallax-rolling"}>
+        视差滚动
+      </Button>
     </main>
   );
 }

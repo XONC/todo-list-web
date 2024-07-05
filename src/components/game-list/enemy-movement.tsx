@@ -206,7 +206,6 @@ export default () => {
       x = x - 3;
       // 让敌人正弦波移动
       y = y + Math.sin(angle) * 10;
-      console.log(y);
       angle = angle + 0.2;
     }
     return {

@@ -17,6 +17,9 @@ export default async function Home() {
       <Button link href={"/game-list?type=enemy-movement"}>
         敌人运动
       </Button>
+      <Button link href={"/game-list?type=sprite-collision"}>
+        精灵表碰撞
+      </Button>
     </main>
   );
 }

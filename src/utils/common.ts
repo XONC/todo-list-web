@@ -147,3 +147,36 @@ export const dateFilter = (
     return prev;
   }, "");
 };
+
+const rect1 = { x: 5, y: 5, width: 50, height: 50 };
+const rect2 = { x: 20, y: 10, width: 10, height: 10 };
+// 矩形碰撞检测
+export const collisionDetection = (rect1, rect2) => {
+  if (
+    rect1.x > rect2.x + rect2.width ||
+    rect1.x + rect1.width < rect2.x ||
+    rect1.y > rect2.y + rect2.height ||
+    rect1.y + rect1.height < rect2.y
+  ) {
+    // no collision
+  } else {
+    // collision
+  }
+};
+const circle1 = { x: 10, y: 10, radius: 300 };
+const circle2 = { x: 500, y: 500, radius: 150 };
+// 圆形碰撞检测
+export const circleCollisionDetection = (circle1, circle2) => {
+  let dx = circle2.x - circle1.x;
+  let dy = circle2.y - circle1.y;
+  let distance = Math.sqrt(dx * dx + dy * dy);
+  let sumOfRadii = circle1.radius + circle2.radius;
+
+  if (distance < sumOfRadii) {
+    // collide
+  } else if (distance === sumOfRadii) {
+    // touching
+  } else if (distance > sumOfRadii) {
+    // no collision
+  }
+};

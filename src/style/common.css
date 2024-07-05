@@ -17,6 +17,16 @@ body {
   height: 100vh;
 }
 
+.full-page-no-padding {
+  height: 100vh;
+}
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .is-loading {
   animation: 1s loading ease-in-out infinite;
 }

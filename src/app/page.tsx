@@ -14,6 +14,9 @@ export default async function Home() {
       <Button link href={"/game-list?type=parallax-rolling"}>
         视差滚动
       </Button>
+      <Button link href={"/game-list?type=enemy-movement"}>
+        敌人运动
+      </Button>
     </main>
   );
 }
